@@ -6,15 +6,16 @@ import auhtorFactory from '../../services/author-factory';
 export const authorResolvers: IResolvers = {
   Query: {
     async getAuthors(_: void, args: void): Promise<Author[]|[]> {
-      return auhtorFactory.getAllAuthors();
+      return await auhtorFactory.getAllAuthors();
     },
-    async getAuthor(_: void, args: QueryGetAuthorArgs): Promise<Author|{}> {
-      return Promise.resolve({id: '1331', name: 'Aninda'});
+    async getAuthor(_: void, args: QueryGetAuthorArgs): Promise<Author|null> {
+      const { id } = args;
+      return await auhtorFactory.getAuthorById(id);
     }
   },
   Mutation: {
-    async saveAuthor(_: void, args: MutationSaveAuthorArgs): Promise<Author|{}> {
-      return Promise.resolve({ ...args });
+    async saveAuthor(_: void, args: MutationSaveAuthorArgs): Promise<Author|null> {
+      return await auhtorFactory.saveAuthors(args);
     }
   }
 }

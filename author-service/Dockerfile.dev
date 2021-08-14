@@ -1,7 +1,7 @@
 FROM node:12.18-alpine
 ENV NODE_PORT=4001
 ENV NODE_ENV=development
-ENV DATABASE_URL=postgres://aninda:aninda@example.com:5432/graphql
+ENV DATABASE_URL=postgres://aninda:aninda@postgres:5432/graphql
 ENV `PG_USER=aninda
 ENV PG_PASS=aninda
 ENV PG_DB=graphql

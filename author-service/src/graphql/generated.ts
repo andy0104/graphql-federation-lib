@@ -29,10 +29,10 @@ export type Mutation = {
 
 
 export type MutationSaveAuthorArgs = {
-  id?: Maybe<Scalars['ID']>;
+  id: Scalars['ID'];
   name: Scalars['String'];
   email: Scalars['String'];
-  phone?: Maybe<Scalars['String']>;
+  phone: Scalars['String'];
 };
 
 export type Query = {
@@ -144,7 +144,7 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  saveAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationSaveAuthorArgs, 'name' | 'email'>>;
+  saveAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationSaveAuthorArgs, 'id' | 'name' | 'email' | 'phone'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
