@@ -1,0 +1,7 @@
+CREATE USER aninda;
+
+CREATE DATABASE graphql;
+GRANT ALL PRIVILEGES ON DATABASE graphql TO aninda;
+
+-- CREATE DATABASE myApp_test;
+-- GRANT ALL PRIVILEGES ON DATABASE myApp_test TO myUser;

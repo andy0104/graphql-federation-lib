@@ -1,0 +1,64 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: postgres_graphql
+    image: postgres
+    environment:
+      - POSTGRES_USER=aninda
+      - POSTGRES_PASSWORD=aninda
+      - POSTGRES_DB=graphql
+    volumes:
+      - postgresgraphql:/var/lib/postgresql/data
+      - ./db/initsql/:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    # networks:
+    #   - postgres
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin_graphql
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-graphql@test.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-graphql}
+      - PGADMIN_SERVER_JSON_FILE=/servers.json
+    volumes:
+        -  pgadmingraphql:/var/lib/pgadmin:rw
+        # - ./db/initsql:/var/lib/pgadmin/storage/tapup_shell.com:rw
+        - ./db/servers.json:/servers.json
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    # networks:
+    #   - postgres
+    restart: unless-stopped
+    depends_on: 
+      - postgres
+
+  # nginx:
+  #   restart: always
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./nginx
+  #   ports:
+  #     - '3050:80'
+
+  author:
+    depends_on: 
+      - postgres
+      - pgadmin
+    image: author-service
+    build:
+      context: ./author-service/
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - 4001:4001
+    volumes:
+      - /usr/src/app/node_modules
+      - ./author-service:/usr/src/app
+    restart: on-failure:10
+volumes:
+  postgresgraphql:
+  pgadmingraphql:

@@ -1,0 +1,13 @@
+{
+  "Servers": {
+      "1": {
+          "Name": "Graphql",
+          "Group": "Graphql",
+          "Port": 5432,
+          "Username": "aninda",
+          "Host": "postgres",
+          "MaintenanceDB": "postgres",
+          "SSLMode": "prefer"
+      }
+  }
+}
