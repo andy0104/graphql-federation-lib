@@ -1,7 +1,7 @@
-type Author @key(fields: "author_id") {
-  author_id: ID!
-  author_name: String!
-  author_email: String!
+type Book {
+  book_id: ID!
+  book_title: String!
+  book_genre: String!
   author_phone: String
 }
 

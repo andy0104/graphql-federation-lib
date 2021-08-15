@@ -59,6 +59,39 @@ services:
       - /usr/src/app/node_modules
       - ./author-service:/usr/src/app
     restart: on-failure:10
+
+  genre:
+    depends_on:
+      - postgres
+      - pgadmin
+    image: genre-service
+    build:
+      context: ./genre-service/
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - 4002:4002
+    volumes:
+      - /usr/src/app/node_modules
+      - ./genre-service:/usr/src/app
+    restart: on-failure:10
+#  book:
+#    depends_on:
+#      - postgres
+#      - pgadmin
+#    image: book-service
+#    build:
+#      context: ./book-service/
+#      dockerfile: Dockerfile.dev
+#    environment:
+#      NODE_ENV: development
+#    ports:
+#      - 4003:4003
+#    volumes:
+#      - /usr/src/app/node_modules
+#      - ./book-service:/usr/src/app
+#    restart: on-failure:10
 volumes:
   postgresgraphql:
   pgadmingraphql:

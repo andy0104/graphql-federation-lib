@@ -1,0 +1,13 @@
+type Genre @key(fields: "genre_id") {
+  genre_id: ID!
+  genre_name: String!
+}
+
+extend type Query {
+  getGenres: [Genre!]!
+  getGenre(id: String!): Genre
+}
+
+extend type Mutation {
+  saveGenre(id: ID!, name: String!): Genre!
+}

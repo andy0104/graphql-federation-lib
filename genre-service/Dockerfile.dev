@@ -1,0 +1,17 @@
+FROM node:12.18-alpine
+ENV NODE_PORT=4002
+ENV NODE_ENV=development
+ENV DATABASE_URL=postgres://aninda:aninda@postgres:5432/graphql
+ENV `PG_USER=aninda
+ENV PG_PASS=aninda
+ENV PG_DB=graphql
+ENV PG_HOST=postgres
+ENV PG_DIALECT=postgres
+WORKDIR /usr/src/app
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+EXPOSE 4002
+RUN npm install -g sequelize-cli
+# RUN npx sequelize-cli db:migrate
+CMD ["npm", "run", "dev"]

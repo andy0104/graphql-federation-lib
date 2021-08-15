@@ -30,7 +30,6 @@
   "author": "Aninda.Kar",
   "license": "ISC",
   "dependencies": {
-    "@apollo/federation": "^0.29.0",
     "@graphql-tools/schema": "^8.0.3",
     "@graphql-tools/utils": "^8.0.2",
     "apollo-server-express": "^3.1.2",
