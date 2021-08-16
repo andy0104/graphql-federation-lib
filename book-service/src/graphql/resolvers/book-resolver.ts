@@ -1,21 +1,30 @@
 import { IResolvers } from '@graphql-tools/utils';
-import { MutationSaveAuthorArgs, QueryGetAuthorArgs } from '../generated';
-import Author from '../../models/author';
-import auhtorFactory from '../../services/book-factory';
+import { MutationSaveBookArgs, QueryGetBookArgs } from '../generated';
+import Book from '../../models/book';
+// import auhtorFactory from '../../services/book-factory';
 
-export const authorResolvers: IResolvers = {
+export const bookResolvers: IResolvers = {
   Query: {
-    async getAuthors(_: void, args: void): Promise<Author[]|[]> {
-      return await auhtorFactory.getAllAuthors();
+    async getBooks(_: void, args: void): Promise<[]> {
+      return Promise.resolve([]);
     },
-    async getAuthor(_: void, args: QueryGetAuthorArgs): Promise<Author|null> {
+    async getBook(_: void, args: QueryGetBookArgs): Promise<null> {
       const { id } = args;
-      return await auhtorFactory.getAuthorById(id);
+      return Promise.resolve(null);
     }
   },
   Mutation: {
-    async saveAuthor(_: void, args: MutationSaveAuthorArgs): Promise<Author|null> {
-      return await auhtorFactory.saveAuthors(args);
+    async saveBook(_: void, args: MutationSaveBookArgs): Promise<any> {
+      console.log(args);
+      return Promise.resolve({ book_id: "42342424", book_title: "sdfs sfsfs", book_genre: "e22eqweqweq" });
+    }
+  },
+  Book: {
+    book_genre(book: any) {
+      return { __typename: "Genre", genre_id: book.book_genre };
+    },
+    book_author(book: any) {
+      return book.book_author.map((author: any) => ({ __typename: "Author", author_id: author.author_id }));
     }
   }
 }

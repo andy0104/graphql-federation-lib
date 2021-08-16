@@ -1,15 +1,23 @@
-type Book {
+type Book @key(fields: "book_id") {
   book_id: ID!
   book_title: String!
-  book_genre: String!
-  author_phone: String
+  book_genre: Genre
+  book_author: [Author]
+}
+
+extend type Genre @key(fields: "genre_id") {
+  genre_id: ID! @external
+}
+
+extend type Author @key(fields: "author_id") {
+  author_id: ID! @external
 }
 
 extend type Query {
-  getAuthors: [Author!]!
-  getAuthor(id: String!): Author
+  getBooks: [Book!]!
+  getBook(id: String!): Book
 }
 
 extend type Mutation {
-  saveAuthor(id: ID!, name: String!, email: String!, phone: String!): Author!
+  saveBook(id: ID!, title: String!, genre: ID!, author: [String!]!): Book!
 }

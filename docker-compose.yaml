@@ -76,6 +76,43 @@ services:
       - /usr/src/app/node_modules
       - ./genre-service:/usr/src/app
     restart: on-failure:10
+
+  book:
+    depends_on:
+      - postgres
+      - pgadmin
+    image: book-service
+    build:
+      context: ./book-service/
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - 4003:4003
+    volumes:
+      - /usr/src/app/node_modules
+      - ./book-service:/usr/src/app
+    restart: on-failure:10
+
+  gateway:
+    depends_on:
+      - postgres
+      - pgadmin
+      - author
+      - genre
+    image: gateway-service
+    build:
+      context: ./gateway-service/
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - 4005:4005
+    volumes:
+      - /usr/src/app/node_modules
+      - ./gateway-service:/usr/src/app
+    restart: on-failure:10
+
 #  book:
 #    depends_on:
 #      - postgres

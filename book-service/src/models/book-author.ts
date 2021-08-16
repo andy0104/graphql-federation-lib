@@ -1,32 +1,27 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from './index';
 
-class Author extends Model {
+class BookAuthor extends Model {
+  book_author_id!: string;
+  book_id!: string;
   author_id!: string;
-  author_name!: String;
-  author_email!: String;
-  author_phone?: String;
   dateDeleted?: Date;
 }
 
-Author.init({
-  author_id: {
+BookAuthor.init({
+  book_author_id: {
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
   },
-  author_name: {
+  book_id: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  author_email: {
+  author_id: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  author_phone: {
-    type: DataTypes.STRING,
-    allowNull: true,
   },
   dateDeleted: {
     type: DataTypes.DATE,
@@ -34,9 +29,9 @@ Author.init({
   }
 }, {
   sequelize,
-  tableName: 'author',
-  timestamps: true,
+  tableName: 'book_author',
+  timestamps: false,
   underscored: false
 });
 
-export default Author;
+export default BookAuthor;

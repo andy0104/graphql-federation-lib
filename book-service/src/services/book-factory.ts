@@ -1,21 +1,14 @@
-import Author from '../models/author';
-import { MutationSaveAuthorArgs } from '../graphql/generated';
+import Book from '../models/book';
+import BookAuthor from "../models/book-author";
+import { MutationSaveBookArgs } from '../graphql/generated';
 
 class BookFactory {
-  public async getAllAuthors(): Promise<Author[]> {
+  public async getAllBooks(): Promise<Book[]> {
     try {
-      return await Author.findAll({});
-    } catch (error) {
-      console.error(error);
-      return Promise.reject(error);
-    }
-  }
-
-  public async getAuthorById(authorId: string): Promise<Author|null> {
-    try {
-      return await Author.findOne({
-        where: {
-          author_id: authorId
+      return await Book.findAll({
+        include: {
+          model: BookAuthor,
+          as: 'book_author'
         }
       });
     } catch (error) {
@@ -24,35 +17,50 @@ class BookFactory {
     }
   }
 
-  public async saveAuthors(params: MutationSaveAuthorArgs): Promise<Author|null> {
+  public async getBookById(bookId: string): Promise<Book|null> {
     try {
-      const { id, name, email, phone } = params;
-      let author: Author|null;
+      return await Book.findOne({
+        where: {
+          book_id: bookId
+        },
+        include: {
+          model: BookAuthor,
+          as: 'book_author'
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  }
+
+  public async saveBooks(params: MutationSaveBookArgs): Promise<Book|null> {
+    try {
+      const { id, title, genre, author } = params;
+      let book: Book|null;
 
       if (id !== '') {
-        // Update the author
-        author = await Author.findOne({
+        // Update the book
+        book = await Book.findOne({
           where: {
-            author_id: id
+            book_id: id
           }
         });
 
-        if (!author) return null;
+        if (!book) return null;
 
-        author.author_name = name||'';
-        author.author_email = email||'';
-        author.author_phone = phone||'';
-        author.save();
+        book.book_title = title||'';
+        book.book_genre = genre||'';
+        await book.save();
       } else {
-        // Add a new author
-        author = await Author.build({
-          author_name: name,
-          author_email: email,
-          author_phone: phone
+        // Add a new book
+        book = await Book.build({
+          book_title: title,
+          book_genre: genre
         });
-        author.save();
+        await book.save();
       }
-      return author;
+      return book;
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
