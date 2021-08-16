@@ -52,6 +52,7 @@ class BookFactory {
         book.book_title = title||'';
         book.book_genre = genre||'';
         await book.save();
+        await this.saveBookAuthors(id, author, true);
       } else {
         // Add a new book
         book = await Book.build({
@@ -59,11 +60,33 @@ class BookFactory {
           book_genre: genre
         });
         await book.save();
+        await this.saveBookAuthors(book.book_id, author);
       }
-      return book;
+      return await this.getBookById(book.book_id);
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
+    }
+  }
+
+  private async saveBookAuthors(bookId: string, authors: string[], clearAll: boolean = false): Promise<boolean> {
+    try {
+      if (clearAll) {
+        // find all book authors
+        await BookAuthor.destroy({
+          where: {
+            book_id: bookId
+          }
+        });
+      }
+
+      authors.forEach(async (author) => {
+        await BookAuthor.create({ book_id: bookId, author_id: author });
+      });
+      return Promise.resolve(true);
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(false);
     }
   }
 }

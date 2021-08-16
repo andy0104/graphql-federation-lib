@@ -36,7 +36,8 @@ Book.init({
 });
 
 Book.hasMany(BookAuthor, {
-  foreignKey: 'book_id'
+  foreignKey: 'book_id',
+  as: 'book_author'
 });
 
 export default Book;
