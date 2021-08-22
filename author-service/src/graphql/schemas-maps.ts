@@ -7,7 +7,6 @@ import * as authorTypeDefs from './schemas/author.graphql';
 //import * as emptyTypeDefs from './schemas/empty.graphql';
 import resolverMap from './resolvers-maps';
 
-
 const authorGql = gql`
   ${authorTypeDefs}
 `;

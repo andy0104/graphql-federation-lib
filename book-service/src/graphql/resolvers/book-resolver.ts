@@ -5,8 +5,8 @@ import bookFactory from '../../services/book-factory';
 
 export const bookResolvers: IResolvers = {
   Query: {
-    async getBooks(_: void, args: void): Promise<[]> {
-      return Promise.resolve([]);
+    async getBooks(_: void, args: void): Promise<Book[]|[]> {
+      return await bookFactory.getAllBooks();
     },
     async getBook(_: void, args: QueryGetBookArgs): Promise<Book|null> {
       const { id } = args;
@@ -25,6 +25,16 @@ export const bookResolvers: IResolvers = {
     },
     book_author(book: any) {
       return book.book_author.map((author: any) => ({ __typename: "Author", author_id: author.author_id }));
+    }
+  },
+  Genre: {
+    async books(genre) {
+      return await bookFactory.getBooksByGenre(genre.genre_id);
+    }
+  },
+  Author: {
+    async books(author) {
+      return await bookFactory.getBooksByAuthor(author.author_id);
     }
   }
 }

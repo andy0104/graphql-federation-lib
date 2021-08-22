@@ -4,6 +4,11 @@ import Genre from '../../models/genre';
 import GenreFactory from '../../services/genre-factory';
 
 export const genreResolvers: IResolvers = {
+  Genre: {
+    __resolveReference: async (ref) => {
+      return await GenreFactory.getGenreById(ref.genre_id);
+    }
+  },
   Query: {
     async getGenres(_: void, args: void): Promise<Genre[]> {
       return await GenreFactory.getAllGenres();

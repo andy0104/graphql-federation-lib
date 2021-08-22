@@ -69,6 +69,40 @@ class BookFactory {
     }
   }
 
+  public async getBooksByGenre(genreId: string): Promise<Book[]> {
+    try {
+      return await Book.findAll({
+        where: {
+          book_genre: genreId
+        },
+        include: {
+          model: BookAuthor,
+          as: 'book_author'
+        }
+      });
+    } catch(error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  }
+
+  public async getBooksByAuthor(authorId: string): Promise<Book[]> {
+    try {
+      return await Book.findAll({
+        include: {
+          model: BookAuthor,
+          as: 'book_author',
+          where: {
+            author_id: authorId
+          }
+        }
+      });
+    } catch(error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  }
+
   private async saveBookAuthors(bookId: string, authors: string[], clearAll: boolean = false): Promise<boolean> {
     try {
       if (clearAll) {

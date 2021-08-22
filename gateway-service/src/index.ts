@@ -17,6 +17,10 @@ dotenv.config();
         {
           name: "genre-service",
           url: "http://genre:4002/graphql"
+        },
+        {
+          name: "book-service",
+          url: "http://book:4003/graphql"
         }
       ]
     });
