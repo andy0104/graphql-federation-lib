@@ -5,9 +5,10 @@ import { CacheHelper } from '../helpers/cache-helper';
 class AuthorFactory {
   public async getAllAuthors(): Promise<Author[]> {
     try {
-      if (CacheHelper.get('author-list')) {
+      const authorList = await CacheHelper.get('author-list');
+      if (authorList) {
         console.log(`Cache hit`);
-        return await CacheHelper.get('customer-list');
+        return await Promise.resolve(authorList);
       }
       console.log(`Cache miss`);
       // Add the data in cache
@@ -22,9 +23,10 @@ class AuthorFactory {
 
   public async getAuthorById(authorId: string): Promise<Author|null> {
     try {
-      if (CacheHelper.get(`author-detail-${authorId}`)) {
+      const authorCache = await CacheHelper.get(`author-detail-${authorId}`);
+      if (authorCache) {
         console.log(`Cache hit`);
-        return await CacheHelper.get(`author-detail-${authorId}`);
+        return Promise.resolve(authorCache);
       }
       console.log(`Cache miss`);
       // Add the data in cache
@@ -69,6 +71,8 @@ class AuthorFactory {
         });
         await author.save();
       }
+
+      // Update the cache storage
       return author;
     } catch (error) {
       console.error(error);

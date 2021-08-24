@@ -1,3 +1,5 @@
+// In-memory cache implementation
+
 export class CacheHelper {
   private static cache: any = {};
 
